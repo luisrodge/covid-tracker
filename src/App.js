@@ -5,6 +5,7 @@ import useSupercluster from "use-supercluster";
 import Loading from "./components/Loading";
 import ClusterInfo from "./components/ClusterInfo";
 import Clusters from "./components/Clusters";
+import Panel from './components/Panel';
 import { cases, recovered } from "./data/data.json";
 
 export default function App() {
@@ -90,44 +91,7 @@ export default function App() {
     <React.Fragment>
       <div className="wrapper">
         <div className="column panel">
-          <div id="overview">
-            <div className="col">
-              <h4>Active</h4>
-              <h4 className="active">900</h4>
-            </div>
-            <div className="col">
-              <h4>Deaths</h4>
-              <h4 className="deaths">200</h4>
-            </div>
-            <div className="col">
-              <h4>Recovered</h4>
-              <h4 className="recovered">10,000</h4>
-            </div>
-            <div className="col">
-              <h4>Today</h4>
-              <h4 className="warning">10,000</h4>
-            </div>
-          </div>
-          <div id="districts">
-            <div className="col">
-              <h5>Cayo</h5>
-            </div>
-            <div className="col">
-              <h5>Belize</h5>
-            </div>
-            <div className="col">
-              <h5>Orange Walk</h5>
-            </div>
-            <div className="col">
-              <h5>Toledo</h5>
-            </div>
-            <div className="col">
-              <h5>Corozal</h5>
-            </div>
-            <div className="col">
-              <h5>Stann Creek</h5>
-            </div>
-          </div>
+          <Panel />
         </div>
         <div className="column map">
           <ReactMapGL
