@@ -25,7 +25,7 @@ const Panel = () => {
       </div>
       <div className="col">
         <h4>Today</h4>
-        <h4 className="warning">100</h4>
+        <h4 className="warning">N/A</h4>
       </div>
     </div>
     <div id="districts">
