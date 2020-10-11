@@ -1,6 +1,6 @@
 import React from "react";
-import { Marker as MapMarker, FlyToInterpolator } from "react-map-gl";
-import { easeCubic } from "d3-ease";
+import { Marker as MapMarker } from "react-map-gl";
+// import { easeCubic } from "d3-ease";
 
 const clusterClassName = (type, pointCount) => {
   let className = "";
