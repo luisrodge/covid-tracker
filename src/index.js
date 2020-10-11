@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import Main from "./Views/Main";
-import Update from './Views/Update'
+import Update from "./Views/Update";
 import * as serviceWorker from "./serviceWorker";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./index.css";
@@ -11,8 +11,11 @@ import "./index.css";
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Route exact path="/" component={Main} />
-      <Route exact path="/update" component={Update} />
+      <Switch>
+        <Route exact path="/" component={Main} />
+        <Route exact path="/update" component={Update} />
+        <Redirect to="/" />
+      </Switch>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
