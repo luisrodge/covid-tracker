@@ -1,5 +1,9 @@
-body {
+*{
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -7,7 +11,162 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow: hidden;
 }
+
+.loading-wrapper {
+  background: #141414;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  animation: ease-in-out infinite alternate;
+  animation-name: run;
+  animation-duration: 1.2s;
+}
+
+.loading-wrapper p {
+  color: rgb(131, 131, 131);
+  padding-top: 8px;
+}
+
+.loading-wrapper span {
+  color: #e43725;
+}
+
+.wrapper .column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  color: #fff;
+  height: 100vh;
+}
+
+.column.panel {
+  background: #141414;
+  width: 200px;
+  flex: 1;
+
+}
+
+.column.map {
+  width: 100%;
+  height: 100vh;
+}
+
+.cluster-popup {
+  z-index: 999;
+}
+
+.cluster-popup .mapboxgl-popup-content {
+  background: #141414;
+}
+
+.cluster-popup .mapboxgl-popup-close-button {
+  color: #fff;
+}
+
+.cluster-marker {
+  color: rgb(2, 2, 2);
+  border-radius: 50%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cluster-marker-1 {
+  background: #ea6153;
+}
+
+.cluster-marker-2 {
+  background: #e43725;
+}
+
+.cluster-marker-3 {
+  background: #bf2718;
+  border: 3px solid red;
+}
+
+.marker {
+  width: 12px;
+  height: 12px;
+  background:#e43725;
+  border-radius: 50%;
+  border: 2px solid #ea6153;
+}
+
+#overview {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: rgb(27, 27, 27);
+}
+
+#overview .col {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 20px 0;
+}
+
+#overview h4 {
+  margin: 0;
+  line-height: 1.4rem;
+}
+
+#districts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: #141414;
+}
+
+#districts .col {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  border-bottom: 1px solid rgb(31, 31, 31);
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+#districts h5 {
+  margin: 0
+}
+
+.active {
+  color: #ea6153;
+}
+
+.deaths {
+  color: #e43725;
+}
+
+.recovered {
+  color: #009432;
+}
+
+.warning {
+  color: #FFC312
+}
+
+

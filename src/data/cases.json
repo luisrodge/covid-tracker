@@ -1,0 +1,58 @@
+{
+  "cases": [
+    {
+      "active": 293,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 17.1493796,
+      "longitude": -89.0950711,
+      "today": 20,
+      "district": "Cayo"
+    },
+    {
+      "active": 453,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 17.513644,
+      "longitude": -88.254722,
+      "today": 20,
+      "district": "Belize"
+    },
+    {
+      "active": 902,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 17.768696,
+      "longitude": -89.028184,
+      "today": 20,
+      "district": "Orange Walk"
+    },
+    {
+      "active": 340,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 18.244626,
+      "longitude": -88.316316,
+      "today": 20,
+      "district": "Corozal"
+    },
+    {
+      "active": 75,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 16.867136,
+      "longitude": -88.442571,
+      "today": 20,
+      "district": "Stann Creek"
+    },
+    {
+      "active": 41,
+      "deceased": 4,
+      "recovered": 199,
+      "latitude": 16.39728,
+      "longitude": -88.944987,
+      "today": 20,
+      "district": "Toledo"
+    }
+  ]
+}
