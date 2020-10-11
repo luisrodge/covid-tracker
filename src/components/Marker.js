@@ -7,6 +7,8 @@ const clusterClassName = (type, pointCount) => {
 
   if (type === "recovered") {
     className = "recovered-cluster";
+  } else if (type === "deceased") {
+    className = "deceased-cluster";
   } else {
     if (pointCount <= 100) {
       className = "cluster-marker-1";
@@ -30,7 +32,13 @@ const Marker = ({
   type,
 }) => {
   const [longitude, latitude] = cluster.geometry.coordinates;
-  const { cluster: isCluster, point_count: pointCount, point_count_abbreviated: pointCountAbbreviated } = cluster.properties;
+  const {
+    cluster: isCluster,
+    point_count: pointCount,
+    point_count_abbreviated: pointCountAbbreviated,
+  } = cluster.properties;
+
+  const item = supercluster.getLeaves(cluster.id)[0];
 
   if (isCluster) {
     return (
@@ -38,6 +46,8 @@ const Marker = ({
         key={`cluster-${cluster.id}`}
         latitude={latitude}
         longitude={longitude}
+        offsetLeft={item.properties.offsetLeft}
+        offsetTop={item.properties.offsetTop}
       >
         <div
           className={`cluster-marker ${clusterClassName(type, pointCount)}`}
@@ -46,12 +56,11 @@ const Marker = ({
             height: `${10 + (pointCount / points.length) * 60}px`,
           }}
           onClick={() => {
-            const items = supercluster.getLeaves(cluster.id);
 
             setPopupInfo({
               latitude,
               longitude,
-              text: items[0].properties.text,
+              text: item.properties.text,
             });
             // const expansionZoom = Math.min(
             //   supercluster.getClusterExpansionZoom(cluster.id),

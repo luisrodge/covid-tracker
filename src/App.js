@@ -5,8 +5,8 @@ import useSupercluster from "use-supercluster";
 import Loading from "./components/Loading";
 import ClusterInfo from "./components/ClusterInfo";
 import Clusters from "./components/Clusters";
-import Panel from './components/Panel';
-import { cases, recovered } from "./data/data.json";
+import Panel from "./components/Panel";
+import { cases, recovered, deaths } from "./data/data.json";
 
 export default function App() {
   const [viewport, setViewport] = useState({
@@ -29,7 +29,12 @@ export default function App() {
     for (let i = 0; i < casesCount; i++) {
       const point = {
         type: "Feature",
-        properties: { cluster: false, text: `${caseValue.district} District` },
+        properties: {
+          cluster: false,
+          text: `${caseValue.district} District`,
+          offsetLeft: caseValue.offsetLeft,
+          offsetTop: caseValue.offsetTop,
+        },
         geometry: {
           type: "Point",
           coordinates: [
@@ -46,7 +51,7 @@ export default function App() {
   for (let i = 0; i < recovered.total; i++) {
     const point = {
       type: "Feature",
-      properties: { cluster: false, text: 'Countrywide Recoveries' },
+      properties: { cluster: false, text: "Countrywide Recoveries" },
       geometry: {
         type: "Point",
         coordinates: [
@@ -56,6 +61,22 @@ export default function App() {
       },
     };
     recoveredPoints.push(point);
+  }
+
+  const deceasedPoints = [];
+  for (let i = 0; i < deaths.total; i++) {
+    const point = {
+      type: "Feature",
+      properties: { cluster: false, text: "Countrywide Deaths" },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          parseFloat(deaths.longitude),
+          parseFloat(deaths.latitude),
+        ],
+      },
+    };
+    deceasedPoints.push(point);
   }
 
   const bounds = mapRef.current
@@ -79,6 +100,16 @@ export default function App() {
     options: { radius: 75, maxZoom: 20 },
   });
 
+  const {
+    clusters: deceasedClusters,
+    supercluster: deceasedSupercluster,
+  } = useSupercluster({
+    points: deceasedPoints,
+    bounds,
+    zoom: viewport.zoom,
+    options: { radius: 75, maxZoom: 20 },
+  });
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -89,6 +120,10 @@ export default function App() {
 
   return (
     <React.Fragment>
+      <div className="site-title">
+        Belize <span>Covid</span> Tracker
+      </div>
+
       <div className="wrapper">
         <div className="column panel">
           <Panel />
@@ -128,6 +163,8 @@ export default function App() {
               recoveredClusters={recoveredClusters}
               supercluster={supercluster}
               recoveredSupercluster={recoveredSupercluster}
+              deceasedClusters={deceasedClusters}
+              deceasedSupercluster={deceasedSupercluster}
               viewport={viewport}
               setViewport={setViewport}
               points={points}

@@ -7,6 +7,8 @@ const Clusters = ({
   recoveredClusters,
   supercluster,
   recoveredSupercluster,
+  deceasedSupercluster,
+  deceasedClusters,
   viewport,
   setViewport,
   setPopupInfo,
@@ -36,7 +38,19 @@ const Clusters = ({
       />
     ));
 
-    return [...activeClusters, ...recovClusters];
+    const deathsClusters = deceasedClusters.map((cluster) => (
+      <Marker
+        cluster={cluster}
+        points={points}
+        setViewport={setViewport}
+        viewport={viewport}
+        supercluster={deceasedSupercluster}
+        setPopupInfo={setPopupInfo}
+        type="deceased"
+      />
+    ));
+
+    return [...activeClusters, ...recovClusters, deathsClusters];
   };
 
   return renderClusters();

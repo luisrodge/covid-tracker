@@ -11,6 +11,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.site-title {
+  position: absolute;
+  top: 100;
+  right: 0;
+  font-size: 17px;
+  font-weight: bold;
+  z-index: 999999;
+  padding: 14px 20px;
+  background: #1A1A1B;
+  border: 1px solid #171718;
+  color: #474747;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 20px;
+}
+
+.site-title span {
+  color: #e43725;
+
+}
+
 .wrapper {
   height: 100vh;
   display: flex;
@@ -85,8 +106,14 @@ body {
 }
 
 .recovered-cluster {
-  background-color: #009432!important;
+  background-color: #009432;
   border: 3px solid #27ae60;
+}
+
+.deceased-cluster {
+  background-color: #000;
+  color: #e43725;
+  border: 1px solid #ea6153;
 }
 
 .cluster-marker-1 {
