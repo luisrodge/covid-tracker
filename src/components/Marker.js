@@ -2,6 +2,24 @@ import React from "react";
 import { Marker as MapMarker, FlyToInterpolator } from "react-map-gl";
 import { easeCubic } from "d3-ease";
 
+const clusterClassName = (type, pointCount) => {
+  let className = "";
+
+  if (type === "recovered") {
+    className = "recovered-cluster";
+  } else {
+    if (pointCount <= 100) {
+      className = "cluster-marker-1";
+    } else if (pointCount > 100 && pointCount <= 750) {
+      className = "cluster-marker-2";
+    } else {
+      className = "cluster-marker-3";
+    }
+  }
+
+  return className;
+};
+
 const Marker = ({
   cluster,
   points,
@@ -9,19 +27,10 @@ const Marker = ({
   viewport,
   supercluster,
   setPopupInfo,
+  type,
 }) => {
   const [longitude, latitude] = cluster.geometry.coordinates;
   const { cluster: isCluster, point_count: pointCount } = cluster.properties;
-
-  let clusterLevel;
-
-  if (pointCount <= 100) {
-    clusterLevel = 1;
-  } else if (pointCount > 100 && pointCount <= 750) {
-    clusterLevel = 2;
-  } else {
-    clusterLevel = 3;
-  }
 
   if (isCluster) {
     return (
@@ -31,7 +40,7 @@ const Marker = ({
         longitude={longitude}
       >
         <div
-          className={`cluster-marker cluster-marker-${clusterLevel}`}
+          className={`cluster-marker ${clusterClassName(type, pointCount)}`}
           style={{
             width: `${10 + (pointCount / points.length) * 60}px`,
             height: `${10 + (pointCount / points.length) * 60}px`,

@@ -5,7 +5,7 @@ import useSupercluster from "use-supercluster";
 import Loading from "./components/Loading";
 import ClusterInfo from "./components/ClusterInfo";
 import Clusters from "./components/Clusters";
-import { cases } from "./data/cases.json";
+import { cases, recovered } from "./data/data.json";
 
 export default function App() {
   const [viewport, setViewport] = useState({
@@ -22,7 +22,7 @@ export default function App() {
 
   const points = [];
 
-  for (const [index, caseValue] of cases.entries()) {
+  cases.forEach((caseValue) => {
     const casesCount = caseValue.active;
 
     for (let i = 0; i < casesCount; i++) {
@@ -39,6 +39,22 @@ export default function App() {
       };
       points.push(point);
     }
+  });
+
+  const recoveredPoints = [];
+  for (let i = 0; i < recovered.total; i++) {
+    const point = {
+      type: "Feature",
+      properties: { cluster: false },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          parseFloat(recovered.longitude),
+          parseFloat(recovered.latitude),
+        ],
+      },
+    };
+    recoveredPoints.push(point);
   }
 
   const bounds = mapRef.current
@@ -52,10 +68,22 @@ export default function App() {
     options: { radius: 75, maxZoom: 20 },
   });
 
+  const {
+    clusters: recoveredClusters,
+    recoveredSupercluster,
+  } = useSupercluster({
+    points: recoveredPoints,
+    bounds,
+    zoom: viewport.zoom,
+    options: { radius: 75, maxZoom: 20 },
+  });
+
+  console.log("REC", recoveredClusters);
+
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false)
-    }, 1000)
+      setLoading(false);
+    }, 1000);
   }, []);
 
   if (loading) return <Loading />;
@@ -135,6 +163,7 @@ export default function App() {
             )}
             <Clusters
               clusters={clusters}
+              recoveredClusters={recoveredClusters}
               supercluster={supercluster}
               viewport={viewport}
               setViewport={setViewport}
