@@ -28,7 +28,7 @@ export default function App() {
     for (let i = 0; i < casesCount; i++) {
       const point = {
         type: "Feature",
-        properties: { cluster: false, district: caseValue.district },
+        properties: { cluster: false, text: `${caseValue.district} District` },
         geometry: {
           type: "Point",
           coordinates: [
@@ -45,7 +45,7 @@ export default function App() {
   for (let i = 0; i < recovered.total; i++) {
     const point = {
       type: "Feature",
-      properties: { cluster: false },
+      properties: { cluster: false, text: 'Countrywide Recoveries' },
       geometry: {
         type: "Point",
         coordinates: [
@@ -70,15 +70,13 @@ export default function App() {
 
   const {
     clusters: recoveredClusters,
-    recoveredSupercluster,
+    supercluster: recoveredSupercluster,
   } = useSupercluster({
     points: recoveredPoints,
     bounds,
     zoom: viewport.zoom,
     options: { radius: 75, maxZoom: 20 },
   });
-
-  console.log("REC", recoveredClusters);
 
   useEffect(() => {
     setTimeout(() => {
@@ -158,13 +156,14 @@ export default function App() {
                 offsetLeft={26}
                 className="cluster-popup"
               >
-                <ClusterInfo districtName={popupInfo.district} />
+                <ClusterInfo textInfo={popupInfo.text} />
               </Popup>
             )}
             <Clusters
               clusters={clusters}
               recoveredClusters={recoveredClusters}
               supercluster={supercluster}
+              recoveredSupercluster={recoveredSupercluster}
               viewport={viewport}
               setViewport={setViewport}
               points={points}

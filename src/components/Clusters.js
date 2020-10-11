@@ -6,6 +6,7 @@ const Clusters = ({
   clusters,
   recoveredClusters,
   supercluster,
+  recoveredSupercluster,
   viewport,
   setViewport,
   setPopupInfo,
@@ -18,7 +19,7 @@ const Clusters = ({
         points={points}
         setViewport={setViewport}
         viewport={viewport}
-        supercluster={supercluster}
+        supercluster={recoveredSupercluster}
         setPopupInfo={setPopupInfo}
         type="recovered"
       />

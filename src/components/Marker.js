@@ -30,7 +30,7 @@ const Marker = ({
   type,
 }) => {
   const [longitude, latitude] = cluster.geometry.coordinates;
-  const { cluster: isCluster, point_count: pointCount } = cluster.properties;
+  const { cluster: isCluster, point_count: pointCount, point_count_abbreviated: pointCountAbbreviated } = cluster.properties;
 
   if (isCluster) {
     return (
@@ -51,7 +51,7 @@ const Marker = ({
             setPopupInfo({
               latitude,
               longitude,
-              district: items[0].properties.district,
+              text: items[0].properties.text,
             });
             // const expansionZoom = Math.min(
             //   supercluster.getClusterExpansionZoom(cluster.id),
@@ -69,7 +69,7 @@ const Marker = ({
             // });
           }}
         >
-          {pointCount}
+          {pointCountAbbreviated}
         </div>
       </MapMarker>
     );
