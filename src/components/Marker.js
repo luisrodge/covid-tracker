@@ -1,5 +1,10 @@
 import React from "react";
 import { Marker as MapMarker } from "react-map-gl";
+import { faVirus,
+  faUserAltSlash,
+  faHeart,
+   } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { easeCubic } from "d3-ease";
 
 const clusterClassName = (type, pointCount) => {
@@ -20,6 +25,37 @@ const clusterClassName = (type, pointCount) => {
   }
 
   return className;
+};
+
+const MarkerIcon = ({ type }) => {
+  if (type === "recovered") {
+    return (
+      <FontAwesomeIcon
+        icon={faHeart}
+        color="#2ecc71"
+        size="lg"
+        style={{ marginRight: 3 }}
+      />
+    );
+  } else if (type === "deceased") {
+    return (
+      <FontAwesomeIcon
+        icon={faUserAltSlash}
+        color="#e43725"
+        size="xs"
+        style={{ marginRight: 1 }}
+      />
+    );
+  } else {
+    return (
+      <FontAwesomeIcon
+        icon={faVirus}
+        color="#e74c3c"
+        size="sm"
+        style={{ marginRight: 2 }}
+      />
+    );
+  }
 };
 
 const Marker = ({
@@ -56,7 +92,6 @@ const Marker = ({
             height: `${10 + (pointCount / points.length) * 60}px`,
           }}
           onClick={() => {
-
             setPopupInfo({
               latitude,
               longitude,
@@ -78,6 +113,7 @@ const Marker = ({
             // });
           }}
         >
+          <MarkerIcon type={type} />
           {pointCountAbbreviated}
         </div>
       </MapMarker>
