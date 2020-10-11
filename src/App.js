@@ -152,7 +152,7 @@ export default function App() {
                 latitude={popupInfo.latitude}
                 closeOnClick={true}
                 onClose={() => setPopupInfo(null)}
-                offsetLeft={26}
+                offsetLeft={10}
                 className="cluster-popup"
               >
                 <ClusterInfo textInfo={popupInfo.text} />
