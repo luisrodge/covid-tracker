@@ -42,7 +42,7 @@ export default function Main() {
 
       <div className="wrapper">
         <div className="column panel">
-          <Panel />
+          <Panel data={data} />
         </div>
         <div className="column map">
           <ReactMapGL

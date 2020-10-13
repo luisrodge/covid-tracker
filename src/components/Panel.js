@@ -7,9 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { cases, recovered, deaths } from "../data/data.json";
+const Panel = ({ data }) => {
+  const { cases, recovered, deaths } = data;
 
-const Panel = () => {
   let active = 0;
   cases.forEach((activeCase) => {
     active += activeCase.active;
@@ -19,24 +19,24 @@ const Panel = () => {
     <React.Fragment>
       <div id="overview">
         <div className="col">
-          <FontAwesomeIcon icon={faVirus} color='#ea6153' />
+          <FontAwesomeIcon icon={faVirus} color="#ea6153" />
           <h4>Active</h4>
           <h4 className="active">{active.toLocaleString()}</h4>
         </div>
         <div className="col">
-          <FontAwesomeIcon icon={faUserAltSlash} color='#c23616' />
+          <FontAwesomeIcon icon={faUserAltSlash} color="#c23616" />
 
           <h4>Deaths</h4>
           <h4 className="deaths">{deaths.total.toLocaleString()}</h4>
         </div>
         <div className="col">
-          <FontAwesomeIcon icon={faHeart} color='#009432' />
+          <FontAwesomeIcon icon={faHeart} color="#009432" />
 
           <h4>Recovered</h4>
           <h4 className="recovered">{recovered.total.toLocaleString()}</h4>
         </div>
         <div className="col">
-          <FontAwesomeIcon icon={faCalendarDay} color='#FFC312' />
+          <FontAwesomeIcon icon={faCalendarDay} color="#FFC312" />
 
           <h4>Today</h4>
           <h4 className="warning">N/A</h4>
