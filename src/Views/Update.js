@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import { useAlert } from "react-alert";
+
+import api from "../data/api";
 
 const UpdateSchema = Yup.object().shape({
   total: Yup.number().min(1, "Must be at least 1").required("Required"),
@@ -10,11 +13,36 @@ const UpdateSchema = Yup.object().shape({
 });
 
 const Update = () => {
+  const [loading, setLoading] = useState(true);
+  const [districts, setDistricts] = useState([]);
   const history = useHistory();
+  const alert = useAlert();
 
-  const handleSubmit = (values, setSubmitting) => {
-    console.log(values);
+  useEffect(() => {
+    const fetchData = async () => {
+      const results = await api("districts");
+      setDistricts(results);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const handleSubmit = async (values, setSubmitting, resetForm) => {
+    setSubmitting(true);
+
+    try {
+      await api("cases", "PUT", values);
+      resetForm()
+      alert.show("Update Successful", { type: "success" });
+    } catch {
+      resetForm()
+      alert.show("Update Failed", { type: "error" });
+    }
+
+    setSubmitting(false);
   };
+
+  if (loading) return null;
 
   return (
     <div className="update-wrapper">
@@ -23,8 +51,8 @@ const Update = () => {
         <Formik
           initialValues={{ total: 0, type: "", district: "" }}
           validationSchema={UpdateSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            handleSubmit(values, setSubmitting);
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            handleSubmit(values, setSubmitting, resetForm);
           }}
         >
           {({
@@ -41,11 +69,15 @@ const Update = () => {
                 <label htmlFor="district">District</label>
                 <Field as="select" name="district">
                   <option defaultValue>Select district</option>
-                  <option value="red">Cayo</option>
-                  <option value="green">Belize</option>
-                  <option value="blue">Orange Walk</option>
+                  {districts.map((district) => (
+                    <option value={district.name} key={district.name}>
+                      {district.name}
+                    </option>
+                  ))}
                 </Field>
-                {errors.district && touched.district && <span className="input-error">{errors.district}</span>}
+                {errors.district && touched.district && (
+                  <span className="input-error">{errors.district}</span>
+                )}
               </div>
 
               <div className="form-group">
@@ -53,14 +85,16 @@ const Update = () => {
                 <Field as="select" name="type">
                   <option defaultValue>Select type</option>
                   <option value="active">Active</option>
-                  <option value="recovery">Recovery</option>
-                  <option value="death">Death</option>
+                  <option value="recovered">Recovered</option>
+                  <option value="deceased">Deceased</option>
                 </Field>
-                {errors.type && touched.type && <span className="input-error">{errors.type}</span>}
+                {errors.type && touched.type && (
+                  <span className="input-error">{errors.type}</span>
+                )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="total">Total</label>
+                <label htmlFor="total">Number Reported</label>
                 <input
                   type="number"
                   name="total"
@@ -68,7 +102,9 @@ const Update = () => {
                   onBlur={handleBlur}
                   value={values.total}
                 />
-                {errors.total && touched.total && <span className="input-error">{errors.total}</span>}
+                {errors.total && touched.total && (
+                  <span className="input-error">{errors.total}</span>
+                )}
               </div>
               <button
                 type="submit"

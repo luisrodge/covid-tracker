@@ -58,5 +58,13 @@
     "total": 35,
     "latitude": 17.699665,
     "longitude": -87.706516
-  }
+  },
+  "districts": [
+    { "id": 1, "name": "Cayo" },
+    { "id": 2, "name": "Belize" },
+    { "id": 3, "name": "Orange Walk" },
+    { "id": 4, "name": "Stann Creek" },
+    { "id": 5, "name": "Corozal" },
+    { "id": 6, "name": "Toledo" }
+  ]
 }

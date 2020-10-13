@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
-import useSupercluster from "use-supercluster";
 
 import Loading from "../components/Loading";
 import ClusterInfo from "../components/ClusterInfo";
 import Clusters from "../components/Clusters";
 import Panel from "../components/Panel";
-import { cases, recovered, deaths } from "../data/data.json";
+import api from "../data/api";
 
 export default function Main() {
   const [viewport, setViewport] = useState({
@@ -17,103 +16,21 @@ export default function Main() {
     zoom: 7.3,
   });
   const [popupInfo, setPopupInfo] = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const mapRef = useRef();
 
-  const points = [];
-
-  cases.forEach((caseValue) => {
-    const casesCount = caseValue.active;
-
-    for (let i = 0; i < casesCount; i++) {
-      const point = {
-        type: "Feature",
-        properties: {
-          cluster: false,
-          text: `${caseValue.district} District`,
-          offsetLeft: caseValue.offsetLeft,
-          offsetTop: caseValue.offsetTop,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [
-            parseFloat(caseValue.longitude),
-            parseFloat(caseValue.latitude),
-          ],
-        },
-      };
-      points.push(point);
-    }
-  });
-
-  const recoveredPoints = [];
-  for (let i = 0; i < recovered.total; i++) {
-    const point = {
-      type: "Feature",
-      properties: { cluster: false, text: "Countrywide Recoveries" },
-      geometry: {
-        type: "Point",
-        coordinates: [
-          parseFloat(recovered.longitude),
-          parseFloat(recovered.latitude),
-        ],
-      },
-    };
-    recoveredPoints.push(point);
-  }
-
-  const deceasedPoints = [];
-  for (let i = 0; i < deaths.total; i++) {
-    const point = {
-      type: "Feature",
-      properties: { cluster: false, text: "Countrywide Deaths" },
-      geometry: {
-        type: "Point",
-        coordinates: [
-          parseFloat(deaths.longitude),
-          parseFloat(deaths.latitude),
-        ],
-      },
-    };
-    deceasedPoints.push(point);
-  }
-
-  const bounds = mapRef.current
-    ? mapRef.current.getMap().getBounds().toArray().flat()
-    : null;
-
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom: viewport.zoom,
-    options: { radius: 75, maxZoom: 20 },
-  });
-
-  const {
-    clusters: recoveredClusters,
-    supercluster: recoveredSupercluster,
-  } = useSupercluster({
-    points: recoveredPoints,
-    bounds,
-    zoom: viewport.zoom,
-    options: { radius: 75, maxZoom: 20 },
-  });
-
-  const {
-    clusters: deceasedClusters,
-    supercluster: deceasedSupercluster,
-  } = useSupercluster({
-    points: deceasedPoints,
-    bounds,
-    zoom: viewport.zoom,
-    options: { radius: 75, maxZoom: 20 },
-  });
-
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    const fetchData = async () => {
+      const results = await api();
+      console.log(results);
+      setData(results);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    };
+    fetchData();
   }, []);
 
   if (loading) return <Loading />;
@@ -146,7 +63,7 @@ export default function Main() {
           >
             {popupInfo && (
               <Popup
-                tipSize={5}
+                tipSize={0}
                 anchor="bottom"
                 longitude={popupInfo.longitude}
                 latitude={popupInfo.latitude}
@@ -159,16 +76,11 @@ export default function Main() {
               </Popup>
             )}
             <Clusters
-              clusters={clusters}
-              recoveredClusters={recoveredClusters}
-              supercluster={supercluster}
-              recoveredSupercluster={recoveredSupercluster}
-              deceasedClusters={deceasedClusters}
-              deceasedSupercluster={deceasedSupercluster}
               viewport={viewport}
               setViewport={setViewport}
-              points={points}
               setPopupInfo={setPopupInfo}
+              mapRef={mapRef}
+              data={data}
             />
           </ReactMapGL>
         </div>
