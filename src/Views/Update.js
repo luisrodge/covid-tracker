@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useAlert } from "react-alert";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import api from "../data/api";
 
@@ -32,10 +34,10 @@ const Update = () => {
 
     try {
       await api("cases", "PUT", values);
-      resetForm()
+      resetForm();
       alert.show("Update Successful", { type: "success" });
     } catch {
-      resetForm()
+      resetForm();
       alert.show("Update Failed", { type: "error" });
     }
 
@@ -46,7 +48,17 @@ const Update = () => {
 
   return (
     <div className="update-wrapper">
-      <h3>Update covid data</h3>
+      <h3>
+        <Link to="/">
+          <FontAwesomeIcon
+            icon={faHome}
+            color="#ccc"
+            size="lg"
+            style={{ marginRight: 16 }}
+          />
+        </Link>
+        Update covid data
+      </h3>
       <div className="update-form-wrapper">
         <Formik
           initialValues={{ total: 0, type: "", district: "" }}
