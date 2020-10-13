@@ -24,7 +24,6 @@ export default function Main() {
   useEffect(() => {
     const fetchData = async () => {
       const results = await api();
-      console.log(results);
       setData(results);
       setTimeout(() => {
         setLoading(false);
