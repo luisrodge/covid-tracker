@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
 import { useQuery } from "react-query";
 
-
 import Loading from "../components/Loading";
 import ClusterInfo from "../components/ClusterInfo";
 import Clusters from "../components/Clusters";
