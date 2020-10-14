@@ -1,8 +1,7 @@
-const base_url = "http://localhost:9000/.netlify/functions";
 
 export default async function api(endpoint = '', method, body) {
   try {
-    const response = await fetch(`${base_url}/api/${endpoint}`, {
+    const response = await fetch(`${process.env.REACT_APP_API}/api/${endpoint}`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
