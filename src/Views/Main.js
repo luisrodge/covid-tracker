@@ -1,10 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
+import { useQuery } from "react-query";
+
 
 import Loading from "../components/Loading";
 import ClusterInfo from "../components/ClusterInfo";
 import Clusters from "../components/Clusters";
 import Panel from "../components/Panel";
+import Error from "../components/Error";
 import api from "../data/api";
 
 export default function Main() {
@@ -16,23 +19,15 @@ export default function Main() {
     zoom: 7.3,
   });
   const [popupInfo, setPopupInfo] = useState(null);
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const mapRef = useRef();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const results = await api();
-      setData(results);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    };
-    fetchData();
-  }, []);
+  const { data, error, isFetching } = useQuery("data", async () => await api());
 
-  if (loading) return <Loading />;
+  if (isFetching) return <Loading />;
+
+  if (error)
+    return <Error message="Something went wrong. Failed to load data." />;
 
   return (
     <React.Fragment>

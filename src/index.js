@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import {
+  QueryCache,
+  ReactQueryCacheProvider,
+} from "react-query";
 
 import Main from "./Views/Main";
 import Update from "./Views/Update";
@@ -17,17 +21,27 @@ const options = {
   transition: transitions.SCALE,
 };
 
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <AlertProvider template={AlertTemplate} {...options}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Main} />
-          <Route exact path="/update" component={Update} />
-          <Redirect to="/" />
-        </Switch>
-      </BrowserRouter>
-    </AlertProvider>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <AlertProvider template={AlertTemplate} {...options}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Main} />
+            <Route exact path="/update" component={Update} />
+            <Redirect to="/" />
+          </Switch>
+        </BrowserRouter>
+      </AlertProvider>
+    </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

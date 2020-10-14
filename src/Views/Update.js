@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useAlert } from "react-alert";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "react-query";
 
 import api from "../data/api";
+import Error from "../components/Error";
 
 const UpdateSchema = Yup.object().shape({
   total: Yup.number().min(1, "Must be at least 1").required("Required"),
@@ -15,19 +17,13 @@ const UpdateSchema = Yup.object().shape({
 });
 
 const Update = () => {
-  const [loading, setLoading] = useState(true);
-  const [districts, setDistricts] = useState([]);
   const history = useHistory();
   const alert = useAlert();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const results = await api("districts");
-      setDistricts(results);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+  const { data, error, isFetching } = useQuery(
+    "districts",
+    async () => await api("districts")
+  );
 
   const handleSubmit = async (values, setSubmitting, resetForm) => {
     setSubmitting(true);
@@ -44,7 +40,10 @@ const Update = () => {
     setSubmitting(false);
   };
 
-  if (loading) return null;
+  if (isFetching) return null;
+
+  if (error)
+    return <Error message="Something went wrong. Failed to load data." />;
 
   return (
     <div className="update-wrapper">
@@ -81,7 +80,7 @@ const Update = () => {
                 <label htmlFor="district">District</label>
                 <Field as="select" name="district">
                   <option defaultValue>Select district</option>
-                  {districts.map((district) => (
+                  {data.map((district) => (
                     <option value={district.name} key={district.name}>
                       {district.name}
                     </option>
